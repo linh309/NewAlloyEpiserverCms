@@ -28,8 +28,8 @@ namespace EpiserverCms.Web.Controllers
             var pageCommentStore = GetPageCommentStore(selectedPage);
 
             var model = new PluginCommentViewModel { };
-            model.ListComment = CommentHelper.GetCommentByPage(pageCommentStore);
-            model.ListPages = PageHelper.FilterPagesByExistedProperty(GetChildrenPageOfStartPage(), PageProperty.UserComment);
+            model.ListComment = CommentHelper.GetCommentByPageId(pageCommentStore, selectedPage.ContentLink.ID);
+            model.ListPages = listPages;
 
             return View(model);
         }

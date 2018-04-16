@@ -36,6 +36,7 @@ namespace EpiserverCms.Web.Controllers
 
             var store = DynamicDataStoreFactory.Instance.CreateStore(commentStore, typeof(UserCommentViewModel));
             comment.CreatedDate = DateTime.Now;
+            comment.PageId = pageId;
             store.Save(comment);
 
             return Redirect(currentUrl);

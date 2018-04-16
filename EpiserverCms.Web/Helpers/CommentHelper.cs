@@ -20,6 +20,16 @@ namespace EpiserverCms.Web.Helpers
             return store != null ? store.LoadAll<UserCommentViewModel>() : new List<UserCommentViewModel>();
         }
 
+        public static IEnumerable<UserCommentViewModel> GetCommentByPageId(string pageCommentStore, int pageId)
+        {
+            var store = GetStoreByName(pageCommentStore);
+            if (store != null)
+            {
+                store.Find("PageId", pageId);
+            }
+            return new List<UserCommentViewModel>();
+        }
+
         private static DynamicDataStore GetStoreByName(string name)
         {
             return DynamicDataStoreFactory.Instance.GetStore(name);

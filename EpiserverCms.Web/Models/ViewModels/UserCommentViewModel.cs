@@ -19,5 +19,7 @@ namespace EpiserverCms.Web.Models.ViewModels
         public bool IsDeleted { get; set; }
         
         public Identity Id { get; set; }
+
+        public int PageId { get; set; }
     }
 }
