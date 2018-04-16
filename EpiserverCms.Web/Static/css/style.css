@@ -637,3 +637,14 @@ form.search-form {
     min-height: 1.1em;
     min-width: 1.6em;
 }
+
+
+/* Manage user comments plugin */
+.active.plugin-comment-page-menu-item {    
+    font-weight: bold;
+}
+
+.page-menu-link {
+    border-radius: 0px !important;
+    cursor: pointer !important;
+}

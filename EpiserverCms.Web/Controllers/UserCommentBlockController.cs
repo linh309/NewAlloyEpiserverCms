@@ -1,7 +1,14 @@
-﻿using EPiServer.Data.Dynamic;
+﻿using EPiServer;
+using EPiServer.Core;
+using EPiServer.Data.Dynamic;
+using EPiServer.ServiceLocation;
+using EPiServer.Util;
 using EPiServer.Web.Mvc;
+using EPiServer.Web.Routing;
+using EpiserverCms.Web.Helpers;
 using EpiserverCms.Web.Models.Blocks;
 using EpiserverCms.Web.Models.Constant;
+using EpiserverCms.Web.Models.Pages;
 using EpiserverCms.Web.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -22,16 +29,16 @@ namespace EpiserverCms.Web.Controllers
 
         [HttpPost]
         public ActionResult PostComment(UserCommentViewModel comment)
-        {            
-            comment.CreatedDate = DateTime.Now;
-
-            var store = DynamicDataStoreFactory.Instance.CreateStore(DynamicDataStoreList.COMMENT_STORE, typeof(UserCommentViewModel));
+        {
+            var pageId = PageHelper.GetCurrentPageId();
+            var commentStore = CommentHelper.GetCommentStore(pageId);
             var currentUrl = HttpContext.Request.UrlReferrer.AbsoluteUri;
-            var id = store.Save(comment);
-            var loadedPerson = store.LoadAll<UserCommentViewModel>();
+
+            var store = DynamicDataStoreFactory.Instance.CreateStore(commentStore, typeof(UserCommentViewModel));
+            comment.CreatedDate = DateTime.Now;
+            store.Save(comment);
 
             return Redirect(currentUrl);
         }
-
     }
 }

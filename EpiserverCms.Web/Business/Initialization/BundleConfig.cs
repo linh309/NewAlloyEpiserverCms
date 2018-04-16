@@ -28,6 +28,8 @@ namespace EpiserverCms.Web.Business.Initialization
                 .Include("~/Static/css/media.css")
                 .Include("~/Static/css/style.css", new CssRewriteUrlTransform())
                 .Include("~/Static/css/editmode.css"));
+
+            BundleTable.EnableOptimizations = false;
         }
 
         public void Uninitialize(InitializationEngine context)

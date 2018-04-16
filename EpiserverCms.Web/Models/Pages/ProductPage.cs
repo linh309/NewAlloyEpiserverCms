@@ -32,5 +32,10 @@ namespace EpiserverCms.Web.Models.Pages
         [CultureSpecific]
         [AllowedTypes(new[] { typeof(IContentData) },new[] { typeof(JumbotronBlock) })]
         public virtual ContentArea RelatedContentArea { get; set; }
+
+        [Display(
+            GroupName = SystemTabNames.Content,
+            Order = 331)]     
+        public virtual UserCommentBlock UserComment { get; set; }
     }
 }

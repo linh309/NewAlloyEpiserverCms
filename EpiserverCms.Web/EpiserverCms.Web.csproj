@@ -398,7 +398,9 @@
     </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\CategorizableExtensions.cs" />
+    <Compile Include="Helpers\CommentHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
+    <Compile Include="Helpers\PageHelper.cs" />
     <Compile Include="Helpers\UrlHelpers.cs" />
     <Compile Include="Models\Blocks\ButtonBlock.cs" />
     <Compile Include="Models\Blocks\ContactBlock.cs" />
@@ -410,6 +412,7 @@
     <Compile Include="Models\Blocks\TeaserBlock.cs" />
     <Compile Include="Models\Blocks\UserCommentBlock.cs" />
     <Compile Include="Models\Constant\DynamicDataStoreList.cs" />
+    <Compile Include="Models\Constant\PageProperty.cs" />
     <Compile Include="Models\Media\GenericMedia.cs" />
     <Compile Include="Models\Media\ImageFile.cs" />
     <Compile Include="Models\Media\VideoFile.cs" />
@@ -571,6 +574,7 @@
     <Content Include="Views\ManageCommentPlugin\Index.cshtml" />
     <Content Include="Views\Shared\Layouts\_Plugin.cshtml" />
     <Content Include="Views\ManageCommentPlugin\_ListComment.cshtml" />
+    <Content Include="Views\ManageCommentPlugin\_ListPages.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
