@@ -2,6 +2,7 @@ using System;
 using System.Web.Mvc;
 using EPiServer;
 using EPiServer.Framework.DataAnnotations;
+using EpiserverCms.Web.Models.Blocks;
 using EpiserverCms.Web.Models.Pages;
 using EpiserverCms.Web.Models.ViewModels;
 
@@ -24,7 +25,7 @@ namespace EpiserverCms.Web.Controllers
             var model = CreateModel(currentPage);
             return View(string.Format("~/Views/{0}/Index.cshtml", currentPage.GetOriginalType().Name), model);
         }
-
+        
         /// <summary>
         /// Creates a PageViewModel where the type parameter is the type of the page.
         /// </summary>

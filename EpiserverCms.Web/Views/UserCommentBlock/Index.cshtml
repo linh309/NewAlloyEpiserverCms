@@ -1,0 +1,19 @@
+﻿@*@model EpiserverCms.Web.Models.Blocks.UserCommentBlock*@
+
+@model EpiserverCms.Web.Models.ViewModels.UserCommentViewModel
+@using (Html.BeginForm("PostComment", "UserCommentBlock", FormMethod.Post))
+{
+    <h2>Comment</h2>
+    <hr />
+    <div class="comment-box">
+        <div class="control-label col-md-5" for="UserEmail">Email</div>
+        <div class="col-md-7">
+            @Html.TextBoxFor(x => x.UserEmail)
+        </div>
+        <div class="control-label col-md-5" for="CommentBody">Comment</div>
+        <div class="col-md-7">
+            @Html.TextBoxFor(x => x.CommentBody)
+        </div>
+        <input type="submit" value="Post" />
+    </div>
+}

@@ -6,6 +6,7 @@ using EpiserverCms.Web.Models.Blocks;
 using EpiserverCms.Web.Models.Pages;
 using EPiServer.Web;
 using EPiServer.Web.Mvc;
+using EpiserverCms.Web.Models.ViewModels;
 
 namespace EpiserverCms.Web.Business.Rendering
 {
