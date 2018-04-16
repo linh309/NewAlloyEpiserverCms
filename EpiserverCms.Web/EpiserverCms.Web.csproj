@@ -385,6 +385,7 @@
     <Compile Include="Controllers\DefaultPageController.cs" />
     <Compile Include="Controllers\FindSearchPageController.cs" />
     <Compile Include="Controllers\ImageFileController.cs" />
+    <Compile Include="Controllers\ManageCommentPluginController.cs" />
     <Compile Include="Controllers\PageControllerBase.cs" />
     <Compile Include="Controllers\PageListBlockController.cs" />
     <Compile Include="Controllers\PreviewController.cs" />
@@ -408,6 +409,7 @@
     <Compile Include="Models\Blocks\SiteLogotypeBlock.cs" />
     <Compile Include="Models\Blocks\TeaserBlock.cs" />
     <Compile Include="Models\Blocks\UserCommentBlock.cs" />
+    <Compile Include="Models\Constant\DynamicDataStoreList.cs" />
     <Compile Include="Models\Media\GenericMedia.cs" />
     <Compile Include="Models\Media\ImageFile.cs" />
     <Compile Include="Models\Media\VideoFile.cs" />
@@ -419,6 +421,7 @@
     <Compile Include="Models\Pages\ISearchPage.cs" />
     <Compile Include="Models\Pages\LandingPage.cs" />
     <Compile Include="Models\Pages\NewsPage.cs" />
+    <Compile Include="Models\Pages\PluginCommentPage.cs" />
     <Compile Include="Models\Pages\ProductPage.cs" />
     <Compile Include="Models\Pages\SitePageData.cs" />
     <Compile Include="Models\Pages\StandardPage.cs" />
@@ -435,6 +438,7 @@
     <Compile Include="Models\ViewModels\LayoutModel.cs" />
     <Compile Include="Models\ViewModels\PageListModel.cs" />
     <Compile Include="Models\ViewModels\PageViewModel.cs" />
+    <Compile Include="Models\ViewModels\PluginCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\PreviewModel.cs" />
     <Compile Include="Models\ViewModels\UserCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\VideoViewModel.cs" />
@@ -564,6 +568,9 @@
     <Content Include="Views\ArticlePage\Index.cshtml" />
     <Content Include="module.config" />
     <Content Include="Views\UserCommentBlock\Index.cshtml" />
+    <Content Include="Views\ManageCommentPlugin\Index.cshtml" />
+    <Content Include="Views\Shared\Layouts\_Plugin.cshtml" />
+    <Content Include="Views\ManageCommentPlugin\_ListComment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

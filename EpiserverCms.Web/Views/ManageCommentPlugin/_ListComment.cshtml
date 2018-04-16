@@ -1,0 +1,20 @@
+﻿@model IEnumerable<UserCommentViewModel>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>User's email</th>
+            <th>Created date</th>
+            <th>Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserEmail</td>
+                <td>@item.CreatedDate</td>
+                <td>@item.CommentBody</td>
+            </tr>
+        }
+    </tbody>
+</table>

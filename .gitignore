@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/EpiserverCms.Web/App_Data/EPiServerDB_6adca7f5.mdf
+/EpiserverCms.Web/App_Data/EPiServerDB_6adca7f5_log.ldf

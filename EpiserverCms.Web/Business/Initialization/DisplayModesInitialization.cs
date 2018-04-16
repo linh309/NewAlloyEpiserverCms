@@ -35,7 +35,9 @@ namespace EpiserverCms.Web.Business.Initialization
                 return true;
             }
             var displayChannelService = ServiceLocator.Current.GetInstance<IDisplayChannelService>();
-            return displayChannelService.GetActiveChannels(httpContext).Any(x => x.ChannelName == MobileChannel.Name);
+            var activeChanel = displayChannelService.GetActiveChannels(httpContext).Any(x => x.ChannelName == MobileChannel.Name);
+
+            return activeChanel;
         }
 
         public void Uninitialize(InitializationEngine context)

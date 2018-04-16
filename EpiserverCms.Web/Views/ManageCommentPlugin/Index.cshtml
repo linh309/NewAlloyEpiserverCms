@@ -1,0 +1,28 @@
+﻿@model PluginCommentViewModel
+@{
+    Layout = "~/Views/Shared/Layouts/_Plugin.cshtml";
+    ViewBag.Title = "Manager user comments";
+}
+
+<div class="row">
+    <div class="span2">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active page-node">                
+                <a style="border-radius: 0px; font-weight: bold;">Home</a>
+            </li>
+            <li>
+               <a>Home</a>
+            </li>
+            <li>
+                <a>Home</a>
+            </li>
+            <li>
+                <a>Home</a>
+            </li>
+        </ul>
+    </div>
+    <div class="span10">
+        @Html.Partial("_ListComment",Model.ListComment)
+    </div>
+</div>
+
