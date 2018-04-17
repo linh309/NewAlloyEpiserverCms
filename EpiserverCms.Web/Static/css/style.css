@@ -685,3 +685,28 @@ label[for="chkDeletedComment"] {
     display: inline-block;
     margin-left: 5px;
 }
+
+.comment-page-header {
+    border-radius: 0px !important;
+    color: #ffffff;
+    background-color: #58595b;
+    font-weight: bold;
+}
+
+.comment-page-header:hover {
+    text-decoration: none !important;
+    background-color: #58595b !important;
+    color: #fff !important;
+}
+
+#centered {
+    position: fixed;
+    top: 5px;
+    left: 50%;
+    margin-left: -100px;
+    background-color: #fff;
+    background: #58595b center bottom no-repeat;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+}

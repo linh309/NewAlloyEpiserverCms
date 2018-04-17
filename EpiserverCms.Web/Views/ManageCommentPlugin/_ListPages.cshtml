@@ -1,6 +1,9 @@
 ﻿@model PluginCommentViewModel
 
 <ul class="nav nav-pills nav-stacked">
+    <li class="plugin-comment-page-menu-item">
+        <a class="comment-page-header">Pages</a>
+    </li>
     @foreach (var page in Model.ListPages)
     {
         <li class="@(page.ContentLink.ID==Model.SelectedPage.ContentLink.ID?"active":"") plugin-comment-page-menu-item">
