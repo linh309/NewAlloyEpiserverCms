@@ -3,10 +3,26 @@
     Layout = "~/Views/Shared/Layouts/_Plugin.cshtml";
     ViewBag.Title = "Manager user comments";
 }
-
 <div class="row">
+    <div class="span12 heading-top-comment">
+        <h2>
+            Manage comment
+        </h2>
+        <hr class="break-comment" />
+    </div>
+</div>
+
+<div class="row margin-bottom-0">
+    @Html.HiddenFor(x => x.SelectedPagedId)
     @Html.Hidden("hdnUrlGetData", Url.Action("LoadComment"))
     @Html.Hidden("hdnUrlUpdateComment", Url.Action("UpdateComment"))
+    <div class="span2"></div>
+    <div class="span10 margin-bottom-0">
+        <input type="checkbox" id="chkDeletedComment" /><label for="chkDeletedComment"> Show deleted comment</label>
+    </div>
+</div>
+
+<div class="row">
     <div class="span2">
         @Html.Partial("_ListPages", Model)
     </div>
@@ -17,21 +33,26 @@
 
 <script language="javascript">
     $(function () {
-        $(".page-menu-link").on("click", onSelectedPage);
-        $(".btn-action").on("click", doAction);
+        $(document).on("click", ".page-menu-link", onSelectedPage);
+        $(document).on("click", ".btn-action", doAction);
+        $(document).on("change", "#chkDeletedComment", loadComment);
     })
 
     function onSelectedPage(btn) {
         var $btnMenu = $(btn.currentTarget);
         var pageId = $btnMenu.data("pageid");
         $("li.plugin-comment-page-menu-item").removeClass("active");
+        $("#SelectedPagedId").val(pageId);
         $btnMenu.parent().addClass("active");
-        loadComment(pageId);
+        loadComment();
     }
 
-    function loadComment(pageId) {
+    function loadComment() {
         var urlGetData = $("#hdnUrlGetData").val();
-        $.get(urlGetData, { pageId }, function (result) {
+        var isDeleted = $("#chkDeletedComment").prop("checked");
+        var pageId = $("#SelectedPagedId").val();
+
+        $.get(urlGetData, { pageId, isDeleted }, function (result) {
             $("#listComment").html(result);
         });
     }
@@ -45,12 +66,7 @@
         $.post(urlUpdate, { commentId, action }, function (result) {
             if (result.status === 'ok') {
                 alert("Succesfully!")
-
-                //delete current row
-                if (action === 'Deleted') {
-                    var parentRow = $actionBtn.closest("tr");
-                    parentRow.remove();
-                }
+                loadComment();
             }
             else if (result.status == 'error') {
                 alert("Comment not found ")

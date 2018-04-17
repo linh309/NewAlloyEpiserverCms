@@ -37,21 +37,25 @@ namespace EpiserverCms.Web.Controllers
             var listPages = PageHelper.FilterPagesByExistedProperty(GetChildrenPageOfStartPage(), PageProperty.UserComment);
             var selectedPage = listPages.FirstOrDefault();
             var pageCommentStore = CommentHelper.GetCommentStoreName();
+            var selectedPageId = selectedPage != null ? selectedPage.ContentLink.ID : 0;
 
+            var condition = CreateCondition(selectedPageId, false);
             var model = new PluginCommentViewModel { };
-            model.ListComment = CommentHelper.GetCommentByPageId(pageCommentStore, selectedPage.ContentLink.ID);
+            model.SelectedPagedId = selectedPageId;
+            model.ListComment = CommentHelper.GetCommentByPageCondition(condition);
             model.ListPages = listPages;
 
-            //add jquery-js to the bottom of page
+            //add jquery-js lib
             RequireClientResources();
 
             return View(model);
         }
 
-        public ActionResult LoadComment(int pageId = 0)
+        public ActionResult LoadComment(int pageId = 0, bool isDeleted = false)
         {
             var pageCommentStore = CommentHelper.GetCommentStoreName();
-            IEnumerable<UserCommentViewModel> listComment = CommentHelper.GetCommentByPageId(pageCommentStore, pageId);
+            var condition = CreateCondition(pageId, isDeleted);
+            var listComment = CommentHelper.GetCommentByPageCondition(condition);
             return PartialView("_ListComment", listComment);
         }
 
@@ -69,7 +73,7 @@ namespace EpiserverCms.Web.Controllers
             }
             else
             {
-                return  Json(new
+                return Json(new
                 {
                     status = "error",
                     message = "Not found"
@@ -78,7 +82,8 @@ namespace EpiserverCms.Web.Controllers
 
             return Json(new
             {
-                status = "ok"
+                status = "ok",
+                pageId = comment.PageId
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -91,6 +96,17 @@ namespace EpiserverCms.Web.Controllers
         private void RequireClientResources()
         {
             requiredClientResourceList.RequireScript(virtualPathResolver.ToAbsolute("~/Static/js/jquery-ui.js")).AtFooter();
+        }
+
+        private IDictionary<string, object> CreateCondition(int pageId, bool isDeleted)
+        {
+            var condition = new Dictionary<string, object>
+            {
+                {"PageId",      pageId },
+                {"IsDeleted",   isDeleted }
+            };
+
+            return condition;
         }
     }
 }

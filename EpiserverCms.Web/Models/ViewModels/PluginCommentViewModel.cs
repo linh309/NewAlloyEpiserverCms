@@ -12,5 +12,7 @@ namespace EpiserverCms.Web.Models.ViewModels
         public  IEnumerable<PageData> ListPages { get; set; }
 
         public PageData SelectedPage => ListPages?.FirstOrDefault();
+
+        public int SelectedPagedId { get; set; }
     }
 }

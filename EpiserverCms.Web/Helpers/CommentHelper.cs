@@ -10,6 +10,8 @@ namespace EpiserverCms.Web.Helpers
 {
     public class CommentHelper
     {
+        private static string _commentStoreName = Models.Constant.DynamicDataStoreList.COMMENT_STORE;
+
         public static string GetCommentStoreName()
         {
             return Models.Constant.DynamicDataStoreList.COMMENT_STORE;
@@ -21,12 +23,12 @@ namespace EpiserverCms.Web.Helpers
             return store != null ? store.LoadAll<UserCommentViewModel>() : new List<UserCommentViewModel>();
         }
 
-        public static IEnumerable<UserCommentViewModel> GetCommentByPageId(string pageCommentStore, int pageId)
+        public static IEnumerable<UserCommentViewModel> GetCommentByPageCondition(IDictionary<string, object> conditions)
         {
-            var store = GetStoreByName(pageCommentStore);
+            var store = GetStoreByName(_commentStoreName);
             if (store != null)
             {
-                return store.Find<UserCommentViewModel>("PageId", pageId);
+                return store.Find<UserCommentViewModel>(conditions);
             }
 
             return new List<UserCommentViewModel>();
