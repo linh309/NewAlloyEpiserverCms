@@ -4,6 +4,7 @@ using EPiServer.Data.Dynamic;
 using EPiServer.ServiceLocation;
 using EPiServer.Util;
 using EPiServer.Web.Mvc;
+using EPiServer.Web.PageExtensions;
 using EPiServer.Web.Routing;
 using EpiserverCms.Web.Helpers;
 using EpiserverCms.Web.Models.Blocks;
@@ -23,20 +24,24 @@ namespace EpiserverCms.Web.Controllers
         // GET: UserCommentBlock
         public override ActionResult Index(UserCommentBlock currentBlock)
         {
-            var model = new UserCommentViewModel();
+            var currentPage = PageHelper.GetCurrentPageDataOfBlock();
+            var model = new UserCommentViewModel
+            {
+                PageId = currentPage.ContentLink.ID,
+                PageName = currentPage.Name
+            };
+
             return PartialView(model);
         }
 
         [HttpPost]
         public ActionResult PostComment(UserCommentViewModel comment)
         {
-            var pageId = PageHelper.GetCurrentPageId();
-            var commentStore = CommentHelper.GetCommentStore(pageId);
+            var commentStore = CommentHelper.GetCommentStoreName();
             var currentUrl = HttpContext.Request.UrlReferrer.AbsoluteUri;
 
             var store = DynamicDataStoreFactory.Instance.CreateStore(commentStore, typeof(UserCommentViewModel));
             comment.CreatedDate = DateTime.Now;
-            comment.PageId = pageId;
             store.Save(comment);
 
             return Redirect(currentUrl);

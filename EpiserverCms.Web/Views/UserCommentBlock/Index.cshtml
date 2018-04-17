@@ -3,6 +3,8 @@
 @model EpiserverCms.Web.Models.ViewModels.UserCommentViewModel
 @using (Html.BeginForm("PostComment", "UserCommentBlock", FormMethod.Post))
 {
+    @Html.HiddenFor(x => x.PageId)
+    @Html.HiddenFor(x => x.PageName)
     <h2>Comment</h2>
     <hr />
     <div class="comment-box">

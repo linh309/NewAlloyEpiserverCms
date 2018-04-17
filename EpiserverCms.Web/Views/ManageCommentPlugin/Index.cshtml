@@ -3,13 +3,43 @@
     Layout = "~/Views/Shared/Layouts/_Plugin.cshtml";
     ViewBag.Title = "Manager user comments";
 }
-
+<div class="modal" id="modal">dd</div>
 <div class="row">
+    @Html.Hidden("hdnUrlGetData", Url.Action("LoadComment"))
     <div class="span2">
-        @Html.Partial("_ListPages", Model)  
+        @Html.Partial("_ListPages", Model)
     </div>
-    <div class="span10">
+    <div class="span10" id="listComment">
         @Html.Partial("_ListComment", Model.ListComment)
     </div>
 </div>
 
+<script language="javascript">
+    $(function () {
+        $(".page-menu-link").on("click", onSelectedPage);
+        $(".btn-action").on("click", doAction);
+    })
+
+
+    function onSelectedPage(btn) {
+        var $btnMenu = $(btn.currentTarget);
+        var pageId = $btnMenu.data("pageid");
+        $("li.plugin-comment-page-menu-item").removeClass("active");
+        $btnMenu.parent().addClass("active");
+        loadComment(pageId);
+    }
+
+    function loadComment(pageId) {
+        var urlGetData = $("#hdnUrlGetData").val();
+        $.get(urlGetData, { pageId }, function (result) {
+            $("#listComment").html(result);
+        });
+    }
+
+    function doAction(btn) {
+        var actionBtn = $(btn.currentTarget);
+        var action = $(actionBtn).data("actiontype");
+        $("#modal").show();
+    }
+
+</script>

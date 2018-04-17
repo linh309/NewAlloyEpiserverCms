@@ -648,3 +648,13 @@ form.search-form {
     border-radius: 0px !important;
     cursor: pointer !important;
 }
+
+.btn-action {
+    width: 50px !important;
+    font-size: 100% !important;
+    height: 25px !important;
+    border-radius: 0px !important;
+    font-weight: bold !important;
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+}

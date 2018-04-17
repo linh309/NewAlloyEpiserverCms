@@ -1,6 +1,8 @@
 ﻿using EPiServer.Core;
 using EPiServer.Data.Dynamic;
+using EPiServer.Framework.Web.Resources;
 using EPiServer.PlugIn;
+using EPiServer.Web;
 using EPiServer.Web.Mvc;
 using EpiserverCms.Web.Helpers;
 using EpiserverCms.Web.Models.Constant;
@@ -20,18 +22,37 @@ namespace EpiserverCms.Web.Controllers
         Url = "/ManageCommentPlugin/"
     )]
     public class ManageCommentPluginController : Controller
-    {       
+    {
+        private readonly IRequiredClientResourceList requiredClientResourceList;
+        private readonly IVirtualPathResolver virtualPathResolver;
+
+        public ManageCommentPluginController(IRequiredClientResourceList requiredClientResourceList, IVirtualPathResolver virtualPathResolver)
+        {
+            this.requiredClientResourceList = requiredClientResourceList;
+            this.virtualPathResolver = virtualPathResolver;
+        }
+
         public ActionResult Index()
         {
             var listPages = PageHelper.FilterPagesByExistedProperty(GetChildrenPageOfStartPage(), PageProperty.UserComment);
             var selectedPage = listPages.FirstOrDefault();
-            var pageCommentStore = GetPageCommentStore(selectedPage);
+            var pageCommentStore = CommentHelper.GetCommentStoreName();
 
             var model = new PluginCommentViewModel { };
             model.ListComment = CommentHelper.GetCommentByPageId(pageCommentStore, selectedPage.ContentLink.ID);
             model.ListPages = listPages;
 
+            //add jquery-js to the bottom of page
+            RequireClientResources();
+
             return View(model);
+        }
+
+        public ActionResult LoadComment(int pageId = 0)
+        {
+            var pageCommentStore = CommentHelper.GetCommentStoreName();
+            IEnumerable<UserCommentViewModel> listComment = CommentHelper.GetCommentByPageId(pageCommentStore, pageId);
+            return PartialView("_ListComment", listComment);
         }
 
         private IEnumerable<PageData> GetChildrenPageOfStartPage()
@@ -40,10 +61,9 @@ namespace EpiserverCms.Web.Controllers
             return listChilrenPage;
         }
 
-        private string GetPageCommentStore(PageData pageData)
+        private void RequireClientResources()
         {
-            var pageId = pageData != null ? pageData.ContentLink.ID : PageReference.StartPage.ID;
-            return CommentHelper.GetCommentStore(pageId);
+            requiredClientResourceList.RequireScript(virtualPathResolver.ToAbsolute("~/Static/js/jquery-ui.js")).AtFooter();
         }
     }
 }

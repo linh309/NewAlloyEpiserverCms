@@ -7,6 +7,6 @@ namespace EpiserverCms.Web.Models.Constant
 {
     public class DynamicDataStoreList
     {
-        public const string COMMENT_STORE = "UserCommentTEST1";
+        public const string COMMENT_STORE = "UserCommentTEST3";
     }
 }

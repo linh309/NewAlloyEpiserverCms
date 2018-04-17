@@ -11,10 +11,10 @@ namespace EpiserverCms.Web.Helpers
 {
     public class PageHelper
     {
-        public static int GetCurrentPageId()
+        public static IContent GetCurrentPageDataOfBlock()
         {
-            var pageRouterHelper = ServiceLocator.Current.GetInstance<IPageRouteHelper>();
-            return pageRouterHelper != null ? pageRouterHelper.ContentLink.ID : 0;
+            var routerHelper = ServiceLocator.Current.GetInstance<IContentRouteHelper>();
+           return routerHelper.Content;
         }
 
         public static int GetPageId(PageData page)

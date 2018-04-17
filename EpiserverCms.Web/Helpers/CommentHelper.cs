@@ -9,9 +9,9 @@ namespace EpiserverCms.Web.Helpers
 {
     public class CommentHelper
     {
-        public static string GetCommentStore(int pageId)
+        public static string GetCommentStoreName()
         {
-            return $"{Models.Constant.DynamicDataStoreList.COMMENT_STORE}_{pageId}";
+            return Models.Constant.DynamicDataStoreList.COMMENT_STORE;
         }
 
         public static IEnumerable<UserCommentViewModel> GetCommentByPage(string pageCommentStore)
@@ -25,7 +25,7 @@ namespace EpiserverCms.Web.Helpers
             var store = GetStoreByName(pageCommentStore);
             if (store != null)
             {
-                store.Find("PageId", pageId);
+                return store.Find<UserCommentViewModel>("PageId", pageId);
             }
             return new List<UserCommentViewModel>();
         }

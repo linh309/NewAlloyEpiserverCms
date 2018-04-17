@@ -21,5 +21,7 @@ namespace EpiserverCms.Web.Models.ViewModels
         public Identity Id { get; set; }
 
         public int PageId { get; set; }
+
+        public string PageName { get; set; }
     }
 }
