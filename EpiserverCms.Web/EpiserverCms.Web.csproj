@@ -411,6 +411,7 @@
     <Compile Include="Models\Blocks\SiteLogotypeBlock.cs" />
     <Compile Include="Models\Blocks\TeaserBlock.cs" />
     <Compile Include="Models\Blocks\UserCommentBlock.cs" />
+    <Compile Include="Models\Constant\ActionTypes.cs" />
     <Compile Include="Models\Constant\DynamicDataStoreList.cs" />
     <Compile Include="Models\Constant\PageProperty.cs" />
     <Compile Include="Models\Media\GenericMedia.cs" />

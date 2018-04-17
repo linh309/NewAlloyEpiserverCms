@@ -12,20 +12,16 @@
     <tbody>
         @foreach (var item in Model)
         {
+            var actionType = item.IsDeleted ? EpiserverCms.Web.Models.Constant.ActionTypes.Restore : EpiserverCms.Web.Models.Constant.ActionTypes.Deleted;
+            var clssClass= item.IsDeleted ? "warning" : "danger";
+            var btnName = item.IsDeleted ? "Restore" : "Delete";
             <tr>
                 <td>@item.UserEmail</td>
                 <td>@item.CommentBody</td>
                 <td>@item.PageName</td>
                 <td>@item.CreatedDate</td>
                 <td>
-                    @if (!item.IsDeleted)
-                    {
-                        <button class="btn btn-small btn-danger btn-action" data-actiontype="Delete">Delete</button>
-                    }
-                    else
-                    {
-                        <button class="btn btn-small btn-warning btn-action" data-actiontype="Restore">Restore</button>
-                    }
+                    <button class="btn btn-small btn-@clssClass btn-action" data-actiontype="@actionType" data-id="@item.Id.ExternalId">@btnName</button>
                 </td>
             </tr>
         }

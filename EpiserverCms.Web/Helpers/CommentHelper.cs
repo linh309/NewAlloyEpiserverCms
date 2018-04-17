@@ -1,4 +1,5 @@
-﻿using EPiServer.Data.Dynamic;
+﻿using EPiServer.Data;
+using EPiServer.Data.Dynamic;
 using EpiserverCms.Web.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,20 @@ namespace EpiserverCms.Web.Helpers
             {
                 return store.Find<UserCommentViewModel>("PageId", pageId);
             }
+
             return new List<UserCommentViewModel>();
+        }
+
+        public static Identity UpdateComment(string pageCommentStore, UserCommentViewModel comment)
+        {
+            var store = GetStoreByName(pageCommentStore);
+            return store.Save(comment);
+        }
+
+        public static UserCommentViewModel GetCommentById(string pageCommentStore, Identity id)
+        {
+            var store = GetStoreByName(pageCommentStore);
+            return store.Load<UserCommentViewModel>(id);
         }
 
         private static DynamicDataStore GetStoreByName(string name)

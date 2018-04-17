@@ -55,6 +55,33 @@ namespace EpiserverCms.Web.Controllers
             return PartialView("_ListComment", listComment);
         }
 
+        [HttpPost]
+        public ActionResult UpdateComment(string commentId, ActionTypes action = ActionTypes.Restore)
+        {
+            var pageCommentStore = CommentHelper.GetCommentStoreName();
+            var id = EPiServer.Data.Identity.NewIdentity(new Guid(commentId));
+            var comment = CommentHelper.GetCommentById(pageCommentStore, id);
+
+            if (comment != null)
+            {
+                comment.IsDeleted = action == ActionTypes.Deleted ? true : false;
+                CommentHelper.UpdateComment(pageCommentStore, comment);
+            }
+            else
+            {
+                return  Json(new
+                {
+                    status = "error",
+                    message = "Not found"
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new
+            {
+                status = "ok"
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         private IEnumerable<PageData> GetChildrenPageOfStartPage()
         {
             var listChilrenPage = PageHelper.GetAllChildrenPages(PageReference.StartPage);

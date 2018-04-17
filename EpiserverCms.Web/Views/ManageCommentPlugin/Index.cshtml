@@ -3,9 +3,10 @@
     Layout = "~/Views/Shared/Layouts/_Plugin.cshtml";
     ViewBag.Title = "Manager user comments";
 }
-<div class="modal" id="modal">dd</div>
+
 <div class="row">
     @Html.Hidden("hdnUrlGetData", Url.Action("LoadComment"))
+    @Html.Hidden("hdnUrlUpdateComment", Url.Action("UpdateComment"))
     <div class="span2">
         @Html.Partial("_ListPages", Model)
     </div>
@@ -19,7 +20,6 @@
         $(".page-menu-link").on("click", onSelectedPage);
         $(".btn-action").on("click", doAction);
     })
-
 
     function onSelectedPage(btn) {
         var $btnMenu = $(btn.currentTarget);
@@ -37,9 +37,25 @@
     }
 
     function doAction(btn) {
-        var actionBtn = $(btn.currentTarget);
-        var action = $(actionBtn).data("actiontype");
-        $("#modal").show();
+        var $actionBtn = $(btn.currentTarget);
+        var action = $actionBtn.data("actiontype");
+        var commentId = $actionBtn.data("id");
+        var urlUpdate = $("#hdnUrlUpdateComment").val();
+
+        $.post(urlUpdate, { commentId, action }, function (result) {
+            if (result.status === 'ok') {
+                alert("Succesfully!")
+
+                //delete current row
+                if (action === 'Deleted') {
+                    var parentRow = $actionBtn.closest("tr");
+                    parentRow.remove();
+                }
+            }
+            else if (result.status == 'error') {
+                alert("Comment not found ")
+            }
+        });
     }
 
 </script>
