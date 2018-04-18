@@ -1,4 +1,5 @@
-﻿@model PluginCommentViewModel
+﻿@using EpiserverCms.Web.Models.Constant
+@model PluginCommentViewModel
 @{
     Layout = "~/Views/Shared/Layouts/_Plugin.cshtml";
     ViewBag.Title = "Manager user comments";
@@ -22,8 +23,16 @@
     @Html.Hidden("hdnUrlGetData", Url.Action("LoadComment"))
     @Html.Hidden("hdnUrlUpdateComment", Url.Action("UpdateComment"))
     <div class="span2"></div>
-    <div class="span10 margin-bottom-0">
-        <input type="checkbox" id="chkDeletedComment" /><label for="chkDeletedComment"> Show deleted comment</label>
+    <div class="span10 margin-bottom-3">
+        @*<input type="checkbox" id="chkDeletedComment" /><label for="chkDeletedComment"> Show deleted comment</label>*@
+
+        <ul class="comment-search">
+            <li><span class="search-text">Search </span></li>
+            <li><a class="search-status" data-status="@CommentStatus.All">All</a></li>
+            <li><a class="search-status active" data-status="@CommentStatus.Enable">Enable</a></li>
+            <li><a class="search-status" data-status="@CommentStatus.Disable">Disable</a></li>
+        </ul>
+
     </div>
 </div>
 
@@ -41,10 +50,11 @@
         $(document).on("click", ".page-menu-link", onSelectedPage);
         $(document).on("click", ".btn-action", doAction);
         $(document).on("change", "#chkDeletedComment", loadComment);
+        $(document).on("click", ".search-status", onChangeStatus);
     })
 
-    function onSelectedPage(btn) {
-        var $btnMenu = $(btn.currentTarget);
+    function onSelectedPage(e) {
+        var $btnMenu = $(e.currentTarget);
         var pageId = $btnMenu.data("pageid");
         $("li.plugin-comment-page-menu-item").removeClass("active");
         $("#SelectedPagedId").val(pageId);
@@ -52,26 +62,33 @@
         loadComment();
     }
 
+    function onChangeStatus(e) {
+        var $btn = $(e.currentTarget);
+        $(".search-status").removeClass("active");
+        $btn.addClass("active");
+        loadComment();
+    }
+
     function loadComment() {
         var urlGetData = $("#hdnUrlGetData").val();
-        var isDeleted = $("#chkDeletedComment").prop("checked");
+        var status = $(".comment-search a.active").data("status");
         var pageId = $("#SelectedPagedId").val();
 
-        $.get(urlGetData, { pageId, isDeleted }, function (result) {
+        $.get(urlGetData, { pageId, status }, function (result) {
             $("#listComment").html(result);
         });
     }
 
-    function doAction(btn) {
-        var $actionBtn = $(btn.currentTarget);
-        var action = $actionBtn.data("actiontype");
-        var confirmMsg = action == "Deleted" ? "Do you want to delete this comment?" : "Do you want to restore this comment?";
+    function doAction(e) {
+        var $actionBtn = $(e.currentTarget);
+        var status = $actionBtn.data("actiontype");
+        var confirmMsg = status == "Deleted" ? "Do you want to delete this comment?" : "Do you want to restore this comment?";
 
         if (confirm(confirmMsg)) {
             var commentId = $actionBtn.data("id");
             var urlUpdate = $("#hdnUrlUpdateComment").val();
 
-            $.post(urlUpdate, { commentId, action }, function (result) {
+            $.post(urlUpdate, { commentId, status }, function (result) {
                 if (result.status === 'ok') {
                     $("#centered").fadeIn(100, "swing", function () { $("#centered").fadeOut(500, "swing") });
                     loadComment();

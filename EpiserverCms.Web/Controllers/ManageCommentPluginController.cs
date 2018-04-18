@@ -21,6 +21,7 @@ namespace EpiserverCms.Web.Controllers
         DisplayName = "Manage user comments",
         Url = "/ManageCommentPlugin/"
     )]
+    [Authorize]
     public class ManageCommentPluginController : Controller
     {
         private readonly IRequiredClientResourceList requiredClientResourceList;
@@ -39,7 +40,7 @@ namespace EpiserverCms.Web.Controllers
             var pageCommentStore = CommentHelper.GetCommentStoreName();
             var selectedPageId = selectedPage != null ? selectedPage.ContentLink.ID : 0;
 
-            var condition = CreateCondition(selectedPageId, false);
+            var condition = CreateCondition(selectedPageId, CommentStatus.Enable);
             var model = new PluginCommentViewModel { };
             model.SelectedPagedId = selectedPageId;
             model.ListComment = CommentHelper.GetCommentByPageCondition(condition);
@@ -51,16 +52,16 @@ namespace EpiserverCms.Web.Controllers
             return View(model);
         }
 
-        public ActionResult LoadComment(int pageId = 0, bool isDeleted = false)
+        public ActionResult LoadComment(int pageId = 0, CommentStatus status = CommentStatus.Enable)
         {
             var pageCommentStore = CommentHelper.GetCommentStoreName();
-            var condition = CreateCondition(pageId, isDeleted);
+            var condition = CreateCondition(pageId, status);
             var listComment = CommentHelper.GetCommentByPageCondition(condition);
             return PartialView("_ListComment", listComment);
         }
 
         [HttpPost]
-        public ActionResult UpdateComment(string commentId, ActionTypes action = ActionTypes.Restore)
+        public ActionResult UpdateComment(string commentId, CommentStatus status = CommentStatus.Disable)
         {
             var pageCommentStore = CommentHelper.GetCommentStoreName();
             var id = EPiServer.Data.Identity.NewIdentity(new Guid(commentId));
@@ -68,8 +69,15 @@ namespace EpiserverCms.Web.Controllers
 
             if (comment != null)
             {
-                comment.IsDeleted = action == ActionTypes.Deleted ? true : false;
-                CommentHelper.UpdateComment(pageCommentStore, comment);
+                if (status == CommentStatus.Enable || status == CommentStatus.Disable)
+                {
+                    comment.IsDeleted = status == CommentStatus.Disable ? true : false;
+                    CommentHelper.UpdateComment(pageCommentStore, comment);
+                }
+                else
+                {
+                    CommentHelper.Delete(pageCommentStore, id);
+                }
             }
             else
             {
@@ -98,13 +106,18 @@ namespace EpiserverCms.Web.Controllers
             requiredClientResourceList.RequireScript(virtualPathResolver.ToAbsolute("~/Static/js/jquery-ui.js")).AtFooter();
         }
 
-        private IDictionary<string, object> CreateCondition(int pageId, bool isDeleted)
+        private IDictionary<string, object> CreateCondition(int pageId, CommentStatus status)
         {
+
             var condition = new Dictionary<string, object>
             {
-                {"PageId",      pageId },
-                {"IsDeleted",   isDeleted }
+                {"PageId",      pageId }
             };
+
+            if (status == CommentStatus.Enable || status == CommentStatus.Disable)
+            {
+                condition.Add("IsDeleted", status == CommentStatus.Disable);
+            }
 
             return condition;
         }

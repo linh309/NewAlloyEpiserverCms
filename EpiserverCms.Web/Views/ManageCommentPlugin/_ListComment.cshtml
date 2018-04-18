@@ -1,4 +1,6 @@
-﻿@model IEnumerable<UserCommentViewModel>
+﻿@using EpiserverCms.Web.Models.Constant
+@model IEnumerable<UserCommentViewModel>
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -12,16 +14,26 @@
     <tbody>
         @foreach (var item in Model)
         {
-            var actionType = item.IsDeleted ? EpiserverCms.Web.Models.Constant.ActionTypes.Restore : EpiserverCms.Web.Models.Constant.ActionTypes.Deleted;
-            var clssClass= item.IsDeleted ? "warning" : "danger";
-            var btnName = item.IsDeleted ? "Restore" : "Delete";
+            //var actionType = item.IsDeleted ? EpiserverCms.Web.Models.Constant.ActionTypes.Restore : EpiserverCms.Web.Models.Constant.ActionTypes.Deleted;
+            //var clssClass = item.IsDeleted ? "info" : "warning";
+            //var btnName = item.IsDeleted ? "Enable" : "Disable";
             <tr>
                 <td>@item.UserEmail</td>
                 <td>@item.CommentBody</td>
                 <td>@item.PageName</td>
                 <td>@item.CreatedDate</td>
                 <td>
-                    <button class="btn btn-small btn-@clssClass btn-action" data-actiontype="@actionType" data-id="@item.Id.ExternalId">@btnName</button>
+                    @*<button class="btn btn-small btn-@clssClass btn-action" data-actiontype="@actionType" data-id="@item.Id.ExternalId">@btnName</button>*@
+                    @if (item.IsDeleted)
+                    {
+                        <button class="btn btn-small btn-danger btn-action" data-actiontype="@CommentStatus.Delete" data-id="@item.Id.ExternalId">Delete</button>
+                        <button class="btn btn-small btn-info btn-action" data-actiontype="@CommentStatus.Enable" data-id="@item.Id.ExternalId">Enable</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-small btn-warning btn-action" data-actiontype="@CommentStatus.Disable" data-id="@item.Id.ExternalId">Disable</button>
+                    }
+
                 </td>
             </tr>
         }

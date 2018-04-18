@@ -11,10 +11,12 @@
         <div class="control-label col-md-5" for="UserEmail">Email</div>
         <div class="col-md-7">
             @Html.TextBoxFor(x => x.UserEmail)
+            @Html.ValidationMessageFor(x => x.UserEmail)
         </div>
         <div class="control-label col-md-5" for="CommentBody">Comment</div>
         <div class="col-md-7">
             @Html.TextBoxFor(x => x.CommentBody)
+            @Html.ValidationMessageFor(x => x.CommentBody)
         </div>
         <input type="submit" value="Post" />
     </div>

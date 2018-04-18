@@ -411,7 +411,7 @@
     <Compile Include="Models\Blocks\SiteLogotypeBlock.cs" />
     <Compile Include="Models\Blocks\TeaserBlock.cs" />
     <Compile Include="Models\Blocks\UserCommentBlock.cs" />
-    <Compile Include="Models\Constant\ActionTypes.cs" />
+    <Compile Include="Models\Constant\CommentStatus.cs" />
     <Compile Include="Models\Constant\DynamicDataStoreList.cs" />
     <Compile Include="Models\Constant\PageProperty.cs" />
     <Compile Include="Models\Media\GenericMedia.cs" />
@@ -464,6 +464,16 @@
     <Content Include="Resources\LanguageFiles\PropertyNames.xml" />
     <Content Include="Resources\LanguageFiles\Views.xml" />
     <Content Include="Resources\LanguageFiles\_ReadMe.txt" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Static\css\bootstrap-collapse.js" />
     <Content Include="Static\css\bootstrap-responsive.css" />
     <Content Include="Static\css\bootstrap.css" />
@@ -576,6 +586,7 @@
     <Content Include="Views\Shared\Layouts\_Plugin.cshtml" />
     <Content Include="Views\ManageCommentPlugin\_ListComment.cshtml" />
     <Content Include="Views\ManageCommentPlugin\_ListPages.cshtml" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

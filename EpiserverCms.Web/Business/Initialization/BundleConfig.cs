@@ -19,7 +19,9 @@ namespace EpiserverCms.Web.Business.Initialization
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                        "~/Static/js/jquery.js", //jquery.js can be removed and linked from CDN instead, we use a local one for demo purposes without internet connectionzz
+                        "~/Scripts/jquery-{version}.js", //jquery.js can be removed and linked from CDN instead, we use a local one for demo purposes without internet connectionzz
+                        "~/Scripts/jquery.validate*",
+                        "~/Scripts/jquery.unobtrusive-ajax.js",
                         "~/Static/js/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/bundles/css")

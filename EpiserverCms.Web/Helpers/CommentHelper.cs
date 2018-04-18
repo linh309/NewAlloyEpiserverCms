@@ -40,6 +40,12 @@ namespace EpiserverCms.Web.Helpers
             return store.Save(comment);
         }
 
+        public static void Delete(string pageCommentStore, Identity id)
+        {
+            var store = GetStoreByName(pageCommentStore);
+            store.Delete(id);
+        }
+
         public static UserCommentViewModel GetCommentById(string pageCommentStore, Identity id)
         {
             var store = GetStoreByName(pageCommentStore);
