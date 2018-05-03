@@ -150,6 +150,9 @@
       <HintPath>..\packages\EPiServer.CMS.AspNet.11.3.4\lib\net461\EPiServer.ImageLibrary.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EPiServer.Labs.LanguageManager, Version=3.1.2.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPiServer.Labs.LanguageManager.3.1.2\lib\EPiServer.Labs.LanguageManager.dll</HintPath>
+    </Reference>
     <Reference Include="EPiServer.Licensing, Version=11.3.4.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\packages\EPiServer.Framework.11.3.4\lib\net461\EPiServer.Licensing.dll</HintPath>
       <Private>True</Private>
@@ -464,6 +467,9 @@
     <Content Include="Resources\LanguageFiles\PropertyNames.xml" />
     <Content Include="Resources\LanguageFiles\Views.xml" />
     <Content Include="Resources\LanguageFiles\_ReadMe.txt" />
+    <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\module.config" />
+    <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\EPiServer.LanguageManager.config" />
+    <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\EPiServer.Labs.LanguageManager.zip" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />

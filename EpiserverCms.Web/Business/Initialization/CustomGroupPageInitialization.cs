@@ -22,6 +22,7 @@ namespace EpiserverCms.Web.Business.Initialization
             //Regiser event
             var contentEvent = ServiceLocator.Current.GetInstance<IContentEvents>();
             contentEvent.CreatingContent += Ce_CreatingContent;
+            contentEvent.CreatedContentLanguage += Ce_CreatedContentLanguage;
         }
 
         public void Uninitialize(InitializationEngine context)
@@ -29,6 +30,12 @@ namespace EpiserverCms.Web.Business.Initialization
             //uregister event
             var contentEvent = ServiceLocator.Current.GetInstance<IContentEvents>();
             contentEvent.CreatingContent -= Ce_CreatingContent;
+            contentEvent.CreatedContentLanguage -= Ce_CreatedContentLanguage;
+        }
+
+        private void Ce_CreatedContentLanguage(object sender, ContentEventArgs e)
+        {
+            var a = 10;
         }
 
         private void Ce_CreatingContent(object sender, ContentEventArgs e)
