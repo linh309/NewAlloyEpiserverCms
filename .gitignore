@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /EpiserverCms.Web/App_Data/EPiServerDB_6adca7f5.mdf
 /EpiserverCms.Web/App_Data/EPiServerDB_6adca7f5_log.ldf
+App_Data

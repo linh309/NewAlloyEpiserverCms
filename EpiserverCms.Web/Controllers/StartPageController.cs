@@ -11,20 +11,30 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Globalization;
+using System.Text;
+using EPiServer.Globalization;
 
 namespace EpiserverCms.Web.Controllers
 {
     public class StartPageController : PageControllerBase<StartPage>
     {
-        public ActionResult Index(StartPage currentPage)
+        public ActionResult Index(StartPage currentPage, bool isDeleted = false)
         {
-            var repo = ServiceLocator.Current.GetInstance<IContentRepository>();
-            var startPage = repo.GetChildren<SitePageData>(PageReference.StartPage);
+            var masterLanguage = currentPage.MasterLanguage;
 
-            var content = GetAllChildren("", " ", PageReference.StartPage);
+            var repo = ServiceLocator.Current.GetInstance<IContentRepository>();
+
+            //var startPage = repo.GetChildren<SitePageData>(PageReference.StartPage, masterLanguage);
+
+            //var listAllChildren = GetAllChildren(PageReference.StartPage);
+            var errorPages = CreatePagesForLanguage(PageReference.StartPage, "sv", repo);
+
+            //if (isDeleted)
+            //{
+            //    DeleteAllPageInLanguage(listAllChildren, "sv");
+            //}
 
             var model = PageViewModel.Create(currentPage);
-
             if (SiteDefinition.Current.StartPage.CompareToIgnoreWorkID(currentPage.ContentLink)) // Check if it is the StartPage or just a page of the StartPage type.
             {
                 //Connect the view models logotype property to the start page's to make it editable
@@ -39,52 +49,75 @@ namespace EpiserverCms.Web.Controllers
             return View(model);
         }
 
-        public string GetAllChildren(string content, string padding, PageReference page)
+        private IList<PageData> GetAllChildren(ContentReference page)
         {
+            var listChildren = new List<PageData>();
             var repo = ServiceLocator.Current.GetInstance<IContentRepository>();
             var pageData = repo.Get<PageData>(page);
-            var children = repo.GetChildren<SitePageData>(page);
-            content += "\n" + padding + " " + pageData.Name;
+            var children = repo.GetChildren<PageData>(page);
+            listChildren.Add(pageData);
 
-            var baseTypeOfPageData = pageData.GetType().BaseType;
-            var pageProperties = baseTypeOfPageData
-                .GetProperties()
-                .Where(p => p.DeclaringType != null && p.DeclaringType.Name == baseTypeOfPageData.Name)                
-                .ToList();
-
-            if (pageData.Name == "Alloy Track")
+            foreach (var item in children)
             {
-                var newLanguage = repo.CreateLanguageBranch<PageData>(page, new LanguageSelector("sv"));
-                newLanguage.Name = pageData.Name;
-                foreach (var property in newLanguage.Property)
+                var listSubChilrren = GetAllChildren(item.ContentLink);
+                listChildren.AddRange(listSubChilrren);
+            }
+
+            return listChildren;
+        }
+
+        private string CreatePagesForLanguage(ContentReference startPage, string language, IContentRepository repo)
+        {
+            var errorMsg = new StringBuilder();
+            var startPageData = repo.Get<PageData>(startPage);
+            var children = repo.GetChildren<SitePageData>(startPage);
+
+            var newLanguagePage = repo.CreateLanguageBranch<PageData>(startPage, new LanguageSelector(language));
+            var listExcludedProperty = new List<string> { "PageMasterLanguageBranch", "PageLanguageBranch" };
+            foreach (var prop in startPageData.Property)
+            {
+                if (!listExcludedProperty.Contains(prop.Name))
                 {
-                    if (pageProperties.Select(p=>p.Name).Contains(property.Name))
-                    {
-                        var pPro = pageProperties.Where(p1 => p1.Name == property.Name).FirstOrDefault();                        
-                        var propertyValue = pageData.GetPropertyValue(property.Name);
-
-                        if (property.Name== "UniqueSellingPoints")
-                        {
-                            //var xType = typeof(IList<string>);
-                            var propValue = pageData.GetPropertyValue<Type>(property.Name);
-                        }
-
-                        if (!property.IsReadOnly)
-                        {
-                            property.Value = propertyValue;
-                        }
-                    }
+                    newLanguagePage.Property.Remove(prop.Name);
+                    var cloneProperty = prop.CreateWritableClone();
+                    cloneProperty.IsModified = true;
+                    newLanguagePage.Property.Add(cloneProperty);
                 }
-                //var copied = repo.Save(newLanguage, EPiServer.DataAccess.SaveAction.Publish);
+            }
+
+            try
+            {
+                var existedNewLanguagePage = repo.Get<PageData>(startPageData.ContentLink, CultureInfo.GetCultureInfo(language));
+                if (existedNewLanguagePage == null)
+                {
+                    repo.Save(newLanguagePage, EPiServer.DataAccess.SaveAction.Publish);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg.AppendLine($"\nName: {startPageData.Name}, ID: {startPageData.ContentLink.ID}, Exception: {ex}");
             }
 
             foreach (var item in children)
             {
-                //content += "\n" + padding + " " + item.Name;
-                var nextLevalPadding = padding + "  ";
-                content = GetAllChildren(content, nextLevalPadding, item.ContentLink as PageReference);
+                var msg = CreatePagesForLanguage(item.ContentLink, language, repo);
+                errorMsg.Append(msg);
             }
-            return content;
+
+            return errorMsg.ToString();
+        }
+
+        private void DeleteAllPageInLanguage(IEnumerable<PageData> listPages, string language)
+        {
+            var repo = ServiceLocator.Current.GetInstance<IContentRepository>();
+            foreach (var childPage in listPages)
+            {
+                var childPageData = repo.Get<PageData>(childPage.ContentLink, CultureInfo.GetCultureInfo("sv"));
+                if (childPageData != null)
+                {
+                    repo.DeleteLanguageBranch(childPage.ContentLink, language, EPiServer.Security.AccessLevel.Delete);
+                }
+            }
         }
     }
 }
