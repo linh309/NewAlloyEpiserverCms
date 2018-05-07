@@ -23,7 +23,7 @@ namespace EpiserverCms.Web.Models.Pages
         {
             PageSize = 20;
             ExcerptLength = 200;
-			HitImagesHeight = 30;
+            HitImagesHeight = 30;
             base.SetDefaultValues(contentType);
         }
 
@@ -60,8 +60,8 @@ namespace EpiserverCms.Web.Models.Pages
         /// Allow editors to specify the hight of hit images.
         /// </summary>
         [Range(0, 300)]
-		[DefaultValue(30)]
-		[Required]
+        [DefaultValue(30)]
+        [Required]
         public virtual int HitImagesHeight { get; set; }
 
         /// <summary>

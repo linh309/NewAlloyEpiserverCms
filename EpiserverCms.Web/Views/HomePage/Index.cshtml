@@ -1,0 +1,7 @@
+﻿@model HomePageViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@Html.PropertyFor(m => m.CurrentPage.SocialLinks, new { CssClass = "linkList" })

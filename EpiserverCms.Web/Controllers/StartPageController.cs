@@ -13,6 +13,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using EPiServer.Globalization;
+using EPiServer.Web.Routing;
 
 namespace EpiserverCms.Web.Controllers
 {
@@ -20,19 +21,16 @@ namespace EpiserverCms.Web.Controllers
     {
         public ActionResult Index(StartPage currentPage, bool isDeleted = false)
         {
-            var masterLanguage = currentPage.MasterLanguage;
+            //var masterLanguage = currentPage.MasterLanguage;
+            //var repo = ServiceLocator.Current.GetInstance<IContentRepository>();            
+            //var startPage= repo.Get<PageData>(PageReference.StartPage, masterLanguage);
+            //var errorPages = CreatePagesForLanguage(startPage.ContentLink, "sv", repo);
+            //var listAllChildren = GetAllChildren(startPage.ContentLink);
 
-            var repo = ServiceLocator.Current.GetInstance<IContentRepository>();
+            var alloyPlanPage = new ContentReference(6);
 
-            //var startPage = repo.GetChildren<SitePageData>(PageReference.StartPage, masterLanguage);
+            var urlAlloyPlan = UrlResolver.Current.GetUrl(alloyPlanPage);
 
-            //var listAllChildren = GetAllChildren(PageReference.StartPage);
-            var errorPages = CreatePagesForLanguage(PageReference.StartPage, "sv", repo);
-
-            //if (isDeleted)
-            //{
-            //    DeleteAllPageInLanguage(listAllChildren, "sv");
-            //}
 
             var model = PageViewModel.Create(currentPage);
             if (SiteDefinition.Current.StartPage.CompareToIgnoreWorkID(currentPage.ContentLink)) // Check if it is the StartPage or just a page of the StartPage type.
@@ -70,7 +68,7 @@ namespace EpiserverCms.Web.Controllers
         {
             var errorMsg = new StringBuilder();
             var startPageData = repo.Get<PageData>(startPage);
-            var children = repo.GetChildren<SitePageData>(startPage);
+            var children = repo.GetChildren<PageData>(startPage);
 
             var newLanguagePage = repo.CreateLanguageBranch<PageData>(startPage, new LanguageSelector(language));
             var listExcludedProperty = new List<string> { "PageMasterLanguageBranch", "PageLanguageBranch" };
